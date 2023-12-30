@@ -1,2 +1,2 @@
 # bignum
-Arbitrary Precision Library written in C.
+Arbitrary precision number library written in C.
