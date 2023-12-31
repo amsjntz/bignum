@@ -14,10 +14,15 @@ objs: $(OBJECTFILES)
 %.o: %.c
 	gcc -c $(CFLAGS) $< -o $@
 
-test: compile
+compiletest: compile
 	cd test && gcc $(CFLAGS) test.c $(addprefix ../,$(OBJECTFILES))
+
+test: compiletest
 	./test/a.out
+
+test-valgrind: compiletest
+	valgrind --leak-check=full -s ./test/a.out
 
 clean:
 	find . -type f -name '*.o' -delete
-	rm ./test/a.out
+	rm -f ./test/a.out
