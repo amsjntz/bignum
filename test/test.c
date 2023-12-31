@@ -4,8 +4,8 @@
 #include <stdio.h>
 
 int main() {
-	const bignum_t* a = bignum_create_from_double(0.05);
-	const bignum_t* b = bignum_create_from_double(0.05);
+	const bignum_t* a = bignum_create_from_string("128734257345734563849578345873465743");
+	const bignum_t* b = bignum_create_from_string("0.00000000000000000000000000005");
 
 	const bignum_comparison_t cmpresult = bignum_compare(a, b);
 	printf("a > b = %s\n", cmpresult == BIGNUM_GT ? "true" : "false");

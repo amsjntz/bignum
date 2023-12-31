@@ -5,7 +5,7 @@
 
 // treats a and b as always positive, will return a negative value if b > a
 bignum_t* unsigned_subtract(const bignum_t* a, const bignum_t* b) {
-	unsigned int newlen = MAX(get_true_length(a), get_true_length(b)) + 1;
+	unsigned int newlen = get_true_length(a) + get_true_length(b);
 	char buffer[newlen];
 	buffer[newlen - 1] = '\0';
 
@@ -34,7 +34,7 @@ bignum_t* unsigned_subtract(const bignum_t* a, const bignum_t* b) {
 
 // treats a and b as always positive, will always return positive value
 bignum_t* unsigned_add(const bignum_t* a, const bignum_t* b) {
-	unsigned int newlen = MAX(get_true_length(a), get_true_length(b)) + 2;
+	unsigned int newlen = get_true_length(a) + get_true_length(b);
 	char buffer[newlen];
 	buffer[newlen - 1] = '\0';
 	
