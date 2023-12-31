@@ -1,49 +1,11 @@
 #include "../include/bignum.h"
+#include "bignum_helpers.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX(a, b) ((a) > (b) ? (a) : (b))
-#define MIN(a, b) ((a) < (b) ? (a) : (b))
-
 #define BUFFER_LENGTH 64
-
-bool is_digit(char c) {
-	return c >= '0' && c <= '9';
-}
-
-bool is_valid_char(char c) {
-	return is_digit(c) || c == '.';
-}
-
-bool has_floating_point(const bignum_t* num) {
-	return num->length != num->whole_digits;
-}
-
-unsigned int get_true_length(const bignum_t* num) {
-	return (num->is_negative ? 1 : 0) + num->length + 1;
-}
-
-unsigned short get_digit_at(const bignum_t* num, int power) {
-	int idx;
-	if (power >= 0) {
-		idx = num->whole_digits - power - 1;
-	} else {
-		idx = num->whole_digits - power;
-	}
-	if (idx < 0 || idx >= (int) num->length) {
-		return 0;
-	}
-	return num->string[idx] - '0';
-}
-
-int get_minimal_power(const bignum_t* num) {
-	if (!has_floating_point(num)) {
-		return 0;
-	}
-	return num->whole_digits - num->length + 1;
-}
 
 void remove_trailing_digits(bignum_t* num) {
 	unsigned int left = 0;
@@ -164,35 +126,6 @@ char* bignum_to_string(const bignum_t* num) {
 	strncpy(str + offset, num->string, num->length);
 
 	return str;
-}
-
-
-bignum_t* bignum_add(const bignum_t* a, const bignum_t* b) {
-	unsigned int newlen = MAX(get_true_length(a), get_true_length(b)) + 2;
-	char buffer[newlen];
-	buffer[newlen - 1] = '\0';
-	
-	unsigned int carry = 0;
-	int power = MIN(get_minimal_power(a), get_minimal_power(b));
-	for (int pos = newlen - 2; pos >= 0; pos--) {
-		if (power == 0) {
-			buffer[pos] = '.';
-			pos--;
-		}
-
-		unsigned int sum = get_digit_at(a, power) + get_digit_at(b, power) + carry;
-		if (sum >= 10) {
-			carry = 1;
-			sum -= 10;
-		} else {
-			carry = 0;
-		}
-		buffer[pos] = '0' + sum;
-
-		power++;
-	}
-
-	return bignum_create_from_string(buffer);
 }
 
 void bignum_cleanup(const bignum_t* num) {
