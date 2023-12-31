@@ -14,3 +14,4 @@ unsigned int get_true_length(const bignum_t* num);
 unsigned short get_digit_at(const bignum_t* num, int power);
 
 int get_minimal_power(const bignum_t* num);
+int get_maximal_power(const bignum_t* num);

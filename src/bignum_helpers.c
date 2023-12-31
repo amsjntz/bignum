@@ -1,4 +1,5 @@
 #include "../include/bignum.h"
+#include "bignum_helpers.h"
 
 #include <stdbool.h>
 
@@ -36,4 +37,14 @@ int get_minimal_power(const bignum_t* num) {
 		return 0;
 	}
 	return num->whole_digits - num->length + 1;
+}
+
+int get_maximal_power(const bignum_t* num) {
+	int minpow = get_minimal_power(num);
+	for (int power = num->whole_digits - 1; power >= minpow; power--) {
+		if (get_digit_at(num, power) != 0) {
+			return power;
+		}
+	}
+	return 0;
 }

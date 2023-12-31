@@ -114,6 +114,20 @@ bignum_t* bignum_create_from_double(double value) {
 	return bignum_create_from_string(buffer);
 }
 
+bignum_t* bignum_copy(const bignum_t* src) {
+	bignum_t* dst = malloc(sizeof(bignum_t));
+
+	dst->length = src->length;
+	dst->string = calloc(src->length + 1, sizeof(char));
+	strncpy((char*) dst->string, src->string, src->length);
+
+	dst->is_negative = src->is_negative;
+
+	dst->whole_digits = src->whole_digits;
+
+	return dst;
+}
+
 char* bignum_to_string(const bignum_t* num) {
 	char* str = calloc(get_true_length(num), sizeof(char));
 	
