@@ -26,3 +26,4 @@ test-valgrind: compiletest
 clean:
 	find . -type f -name '*.o' -delete
 	rm -f ./test/a.out
+	rm -f vgcore.*
