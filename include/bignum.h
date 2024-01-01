@@ -29,5 +29,6 @@ bignum_t* bignum_divide(const bignum_t* a, const bignum_t* b); // returns a / b
 typedef enum {BIGNUM_EQ, BIGNUM_LT, BIGNUM_GT} bignum_comparison_t;
 
 bignum_comparison_t bignum_compare(const bignum_t* a, const bignum_t* b);
+bignum_comparison_t bignum_unsigned_compare(const bignum_t* a, const bignum_t* b);
 
 void bignum_cleanup(const bignum_t* num);

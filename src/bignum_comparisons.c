@@ -2,7 +2,7 @@
 #include "bignum_helpers.h"
 
 // ignores is_negative of both numbers
-bignum_comparison_t unsigned_compare(const bignum_t* a, const bignum_t* b) {
+bignum_comparison_t bignum_unsigned_compare(const bignum_t* a, const bignum_t* b) {
 	int amaxpow = get_maximal_power(a);
 	int bmaxpow = get_maximal_power(b);
 
@@ -32,7 +32,7 @@ bignum_comparison_t bignum_compare(const bignum_t* a, const bignum_t* b) {
 	} else if (!a->is_negative && b->is_negative) { // a > 0 and b < 0 => a > b
 		return BIGNUM_GT;
 	} else if (a->is_negative && b->is_negative) { // a < 0 and b < 0
-		return unsigned_compare(b, a);
+		return bignum_unsigned_compare(b, a);
 	}
-	return unsigned_compare(a, b);
+	return bignum_unsigned_compare(a, b);
 }
