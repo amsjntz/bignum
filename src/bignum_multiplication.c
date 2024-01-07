@@ -5,6 +5,32 @@
 #include <string.h>
 #include <stdio.h>
 
+typedef struct {
+	unsigned char value;
+	int power;
+} powered_number;
+
+unsigned int create_result_string(char target[], unsigned int len, int aminpow, int bminpow) {
+	memset(target, '0', len);
+	target[len - 1] = '\0';
+	if (aminpow < 0 || bminpow < 0) {
+		unsigned int commapos = len - 2 - ABS(aminpow) - ABS(bminpow);
+		target[commapos] = '.';
+		return commapos;
+	}
+	return len - 1;
+}
+
+// returns the carry
+unsigned char add_at_power(char target[], int power, unsigned char value, unsigned int commapos) {
+	unsigned int bufferpos = commapos - power;
+	if (power >= 0) bufferpos--;
+	unsigned char a = target[bufferpos] - '0';
+	unsigned char sum = a + value;
+	target[bufferpos] = '0' + (sum % 10);
+	return sum / 10;
+}
+
 bignum_t* bignum_multiply(const bignum_t* a, const bignum_t* b) {
 	int amaxpow = get_maximal_power(a);
 	int aminpow = get_minimal_power(a);
@@ -12,18 +38,14 @@ bignum_t* bignum_multiply(const bignum_t* a, const bignum_t* b) {
 	int bmaxpow = get_maximal_power(b);
 	int bminpow = get_minimal_power(b);
 
-	struct powered_number {
-		unsigned int value;
-		int power;
-	};
-
+	
 	unsigned int num_idx = 0;
-	struct powered_number numbers[get_true_length(a) * get_true_length(b)];
+	powered_number numbers[get_true_length(a) * get_true_length(b)];
 
 	for (int bpower = bmaxpow; bpower >= bminpow; bpower--) {
 		for (int apower = aminpow; apower <= amaxpow; apower++) {
 			unsigned int product = get_digit_at(a, apower) * get_digit_at(b, bpower);
-			numbers[num_idx++] = (struct powered_number) {
+			numbers[num_idx++] = (powered_number) {
 				.value = product,
 				.power = apower + bpower
 			};
@@ -32,14 +54,15 @@ bignum_t* bignum_multiply(const bignum_t* a, const bignum_t* b) {
 
 	unsigned int result_length = get_true_length(a) + get_true_length(b);
 	char result[result_length];
-	memset(result, '0', result_length);
-	result[result_length - 1] = '\0';
-	int minpow = MIN(aminpow, bminpow);
-	if (minpow < 0) {
-		result[result_length - 2 + minpow] = '.';
+	unsigned int commapos = create_result_string(result, result_length, aminpow, bminpow);
+
+	for (unsigned int i = 0; i < num_idx; i++) {
+		unsigned int power = numbers[i].power;
+		unsigned char carry = add_at_power(result, power, numbers[i].value, commapos);
+		while (carry > 0) {
+			carry = add_at_power(result, ++power, carry, commapos);
+		}
 	}
 
-	printf("%s\n", result);
-
-	return bignum_create_from_string("0");
+	return bignum_create_from_string(result);
 }
