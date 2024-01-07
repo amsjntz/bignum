@@ -3,6 +3,8 @@
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
+#define ABS(a) (a < 0 ? -a : a)
+
 bool is_digit(char c);
 
 bool is_valid_char(char c);
