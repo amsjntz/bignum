@@ -3,7 +3,6 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 typedef struct {
 	unsigned char value;
@@ -42,6 +41,7 @@ bignum_t* bignum_multiply(const bignum_t* a, const bignum_t* b) {
 	unsigned int num_idx = 0;
 	powered_number numbers[get_true_length(a) * get_true_length(b)];
 
+	// create partial results that sum up to the product
 	for (int bpower = bmaxpow; bpower >= bminpow; bpower--) {
 		for (int apower = aminpow; apower <= amaxpow; apower++) {
 			unsigned int product = get_digit_at(a, apower) * get_digit_at(b, bpower);
@@ -56,6 +56,7 @@ bignum_t* bignum_multiply(const bignum_t* a, const bignum_t* b) {
 	char result[result_length];
 	unsigned int commapos = create_result_string(result, result_length, aminpow, bminpow);
 
+	// sum up all partial results
 	for (unsigned int i = 0; i < num_idx; i++) {
 		unsigned int power = numbers[i].power;
 		unsigned char carry = add_at_power(result, power, numbers[i].value, commapos);

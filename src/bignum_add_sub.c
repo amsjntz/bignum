@@ -2,7 +2,6 @@
 #include "bignum_helpers.h"
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
 // treats a and b as always positive, will always return a positive value
