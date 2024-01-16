@@ -27,8 +27,8 @@ Use ```DEBUG=1``` to compile any targets with debug flags. Execute ```clean``` b
 | treating numbers as unsigned | ❌          |
 | addition                     | ✔️           |
 | subtraction                  | ✔️           |
-| multiplication               | ⚠           |
-| division                     | ❌          |
+| multiplication               | ✔️           |
+| division                     | ✔️           |
 | modulo                       | ❌          |
 | freeing ```bignum```         | ✔️           |
 
