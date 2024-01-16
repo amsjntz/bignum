@@ -30,7 +30,7 @@ unsigned char add_at_power(char target[], int power, unsigned char value, unsign
 	return sum / 10;
 }
 
-bignum_t* bignum_multiply(const bignum_t* a, const bignum_t* b) {
+bignum_t* unsigned_multiply(const bignum_t* a, const bignum_t* b) {
 	int amaxpow = get_maximal_power(a);
 	int aminpow = get_minimal_power(a);
 
@@ -66,4 +66,14 @@ bignum_t* bignum_multiply(const bignum_t* a, const bignum_t* b) {
 	}
 
 	return bignum_create_from_string(result);
+}
+
+bignum_t* bignum_multiply(const bignum_t* a, const bignum_t* b) {
+	bignum_t* result = unsigned_multiply(a, b);
+	
+	if ((a->is_negative ^ b->is_negative) == 1) {
+		result->is_negative = true;
+	}
+
+	return result;
 }
