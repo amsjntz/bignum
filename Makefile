@@ -23,6 +23,9 @@ test: compiletest
 test-valgrind: compiletest
 	valgrind --leak-check=full -s ./test/a.out
 
+lib: compile
+	ar rcs libbignum.a $(OBJECTFILES)
+
 clean:
 	find . -type f -name '*.o' -delete
 	rm -f ./test/a.out
