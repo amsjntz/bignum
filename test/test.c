@@ -4,8 +4,8 @@
 #include <stdio.h>
 
 int main() {
-	const bignum_t* a = bignum_create_from_string("-1");
-	const bignum_t* b = bignum_create_from_string("123.5");
+	const bignum_t* a = bignum_create_from_string("1");
+	const bignum_t* b = bignum_create_from_string("8");
 
 	const bignum_comparison_t cmpresult = bignum_compare(a, b);
 	printf("a > b = %s\n", cmpresult == BIGNUM_GT ? "true" : "false");
@@ -33,20 +33,24 @@ int main() {
 	bignum_t* sum = bignum_add(a, b);
 	bignum_t* dif = bignum_subtract(a, b);
 	bignum_t* prd = bignum_multiply(a, b);
+	bignum_t* div = bignum_divide(a, b, 10);
 
 	char* sumstr = bignum_to_string(sum);
 	char* difstr = bignum_to_string(dif);
 	char* prdstr = bignum_to_string(prd);
+	char* divstr = bignum_to_string(div);
 	
-	printf("a + b = %s\na - b = %s\na * b = %s\n", sumstr, difstr, prdstr);
+	printf("a + b = %s\na - b = %s\na * b = %s\na / b = %s\n", sumstr, difstr, prdstr, divstr);
 
 	free(sumstr);
 	free(difstr);
 	free(prdstr);
+	free(divstr);
 
 	bignum_cleanup(sum);
 	bignum_cleanup(dif);
 	bignum_cleanup(prd);
+	bignum_cleanup(div);
 
 	bignum_cleanup(b);
 
