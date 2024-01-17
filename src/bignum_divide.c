@@ -1,8 +1,6 @@
 #include "../include/bignum.h"
 #include "bignum_helpers.h"
 
-#include <stdio.h>
-
 // this works on the assumption that when a / b = result, b * result = a.
 // it basically brute forces its way to the result by starting at 5 for every digit,
 // and then adjusting it until we got closer to the correct result.
