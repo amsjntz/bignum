@@ -48,3 +48,8 @@ int get_maximal_power(const bignum_t* num) {
 	}
 	return 0;
 }
+
+bool is_zero(const bignum_t* num) {
+	return get_maximal_power(num) == get_minimal_power(num) &&
+		num->string[0] == '0';
+}

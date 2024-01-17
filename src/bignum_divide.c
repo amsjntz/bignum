@@ -1,6 +1,8 @@
 #include "../include/bignum.h"
 #include "bignum_helpers.h"
 
+#include <stdlib.h>
+
 // this works on the assumption that when a / b = result, b * result = a.
 // it basically brute forces its way to the result by starting at 5 for every digit,
 // and then adjusting it until we got closer to the correct result.
@@ -61,6 +63,8 @@ exit:
 }
 
 bignum_t* bignum_divide(const bignum_t* a, const bignum_t* b, unsigned int digits) {
+	if (is_zero(b)) return NULL;
+
 	bignum_t* result = unsigned_divide(a, b, digits);
 
 	if ((a->is_negative ^ b->is_negative) == 1) {
