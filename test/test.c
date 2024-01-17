@@ -5,12 +5,7 @@
 
 int main() {
 	const bignum_t* a = bignum_create_from_string("1");
-	const bignum_t* b = bignum_create_from_string("7823");
-
-	const bignum_comparison_t cmpresult = bignum_compare(a, b);
-	printf("a > b = %s\n", cmpresult == BIGNUM_GT ? "true" : "false");
-	printf("a < b = %s\n", cmpresult == BIGNUM_LT ? "true" : "false");
-	printf("a == b = %s\n", cmpresult == BIGNUM_EQ ? "true" : "false");
+	const bignum_t* b = bignum_create_from_string("-10");
 
 	if (a == NULL) {
 		printf("a is not a number\n");
@@ -29,6 +24,11 @@ int main() {
 	char* bstr = bignum_to_string(b);
 	printf("b = %s\n", bstr);
 	free(bstr);
+
+	const bignum_comparison_t cmpresult = bignum_compare(a, b);
+	printf("a > b = %s\n", cmpresult == BIGNUM_GT ? "true" : "false");
+	printf("a < b = %s\n", cmpresult == BIGNUM_LT ? "true" : "false");
+	printf("a == b = %s\n", cmpresult == BIGNUM_EQ ? "true" : "false");
 
 	bignum_t* sum = bignum_add(a, b);
 	bignum_t* dif = bignum_subtract(a, b);
