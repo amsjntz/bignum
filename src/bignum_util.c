@@ -81,8 +81,7 @@ bignum_t* bignum_create_from_string(const char* src) {
 		length++;
 	}
 
-	// if string is empty, or src ended with '.'
-	if (length == 0 || (unsigned int) whole_digits == length - 1) {
+	if (length == 0) {
 		return NULL;
 	}
 
