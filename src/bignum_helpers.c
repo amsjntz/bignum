@@ -52,9 +52,7 @@ int get_maximal_power(const bignum_t* num) {
 }
 
 bool is_zero(const bignum_t* num) {
-	int maxpow = get_maximal_power(num);
-	return maxpow == 1 && maxpow == get_minimal_power(num) &&
-		num->string[0] == '0';
+	return num->length == 1 && num->string[0] == '0';
 }
 
 void remove_trailing_digits(bignum_t* num) {
