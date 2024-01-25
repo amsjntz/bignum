@@ -105,7 +105,7 @@ void crop_to_precision(bignum_t* num, unsigned int precision) {
 		return;
 	}
 
-	unsigned int new_length = num->whole_digits + precision + 2;
+	unsigned int new_length = MIN(num->length + 1, num->whole_digits + precision + 2);
 	char* newstring = calloc(new_length, sizeof(char));
 
 	unsigned int index = 0;
