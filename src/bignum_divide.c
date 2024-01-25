@@ -30,6 +30,7 @@ void narrow_iterative(narrowed_result_t* bounds, bignum_division_t* division) {
 	bignum_t* half_factor = bignum_create_from_string("0.5");
 
 	while (!precise_enough(bounds, division->max_difference)) {
+		printf("%s %s\n", bounds->lower->string, bounds->upper->string);
 		bignum_t* sum = bignum_add(bounds->lower, bounds->upper);
 		bignum_t* center = bignum_multiply(sum, half_factor);
 		bignum_cleanup(sum);
@@ -78,8 +79,8 @@ bignum_t* create_bignum_by_power(int power) {
 
 bignum_t* unsigned_divide(const bignum_t* a, const bignum_t* b, unsigned int digits) {
 	narrowed_result_t bounds;
-	int upper_power = MAX(get_maximal_power(a) - get_minimal_power(b),
-			get_maximal_power(b) - get_minimal_power(a));
+	int upper_power = MAX(2, MAX(get_maximal_power(a) - get_minimal_power(b),
+			get_maximal_power(b) - get_minimal_power(a)));
 	bounds.upper = create_bignum_by_power(upper_power);
 	bounds.lower = bignum_create_from_string("0");
 
