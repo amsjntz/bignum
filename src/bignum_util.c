@@ -7,51 +7,6 @@
 
 #define BUFFER_LENGTH 64
 
-void remove_trailing_digits(bignum_t* num) {
-	unsigned int left = 0;
-	unsigned int right = num->length - 1;
-
-	bool has_point = has_floating_point(num);
-	
-	while (true) {
-		bool adjusted = false;
-		if (num->string[left] == '0') {
-			left++;
-			adjusted = true;
-		}
-		if (has_point && num->string[right] == '0') {
-			right--;
-			adjusted = true;
-		}
-
-		if (!adjusted) {
-			break;
-		}
-	}
-	
-	unsigned int newlen = right - left + 1;
-	if (num->string[right] == '.') {
-		newlen--;
-	}
-	if (newlen == 0) {
-		newlen = 1;
-		left--;
-	}
-	if (num->string[left] == '.') {
-		newlen++;
-		left--;
-	}
-
-	char* newstr = calloc(newlen + 1, sizeof(char));
-	strncpy((char*) newstr, num->string+left, newlen);
-
-	free((char*) num->string);
-	num->string = newstr;
-
-	num->length = newlen;
-	num->whole_digits -= left;
-}
-
 bignum_t* bignum_create_from_string(const char* src) {
 	unsigned int length = 0;
 	bool is_negative = false;

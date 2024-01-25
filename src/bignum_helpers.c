@@ -2,6 +2,8 @@
 #include "bignum_helpers.h"
 
 #include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
 
 bool is_digit(char c) {
 	return c >= '0' && c <= '9';
@@ -53,4 +55,70 @@ bool is_zero(const bignum_t* num) {
 	int maxpow = get_maximal_power(num);
 	return maxpow == 1 && maxpow == get_minimal_power(num) &&
 		num->string[0] == '0';
+}
+
+void remove_trailing_digits(bignum_t* num) {
+	unsigned int left = 0;
+	unsigned int right = num->length - 1;
+
+	bool has_point = has_floating_point(num);
+	
+	while (true) {
+		bool adjusted = false;
+		if (num->string[left] == '0') {
+			left++;
+			adjusted = true;
+		}
+		if (has_point && num->string[right] == '0') {
+			right--;
+			adjusted = true;
+		}
+
+		if (!adjusted) {
+			break;
+		}
+	}
+	
+	unsigned int newlen = right - left + 1;
+	if (num->string[right] == '.') {
+		newlen--;
+	}
+	if (newlen == 0) {
+		newlen = 1;
+		left--;
+	}
+	if (num->string[left] == '.') {
+		newlen++;
+		left--;
+	}
+
+	char* newstr = calloc(newlen + 1, sizeof(char));
+	strncpy((char*) newstr, num->string+left, newlen);
+
+	free((char*) num->string);
+	num->string = newstr;
+
+	num->length = newlen;
+	num->whole_digits -= left;
+}
+
+void crop_to_precision(bignum_t* num, unsigned int precision) {
+	if (!has_floating_point(num)) {
+		return;
+	}
+
+	unsigned int new_length = num->whole_digits + precision + 2;
+	char* newstring = calloc(new_length, sizeof(char));
+
+	unsigned int index = 0;
+	while (num->string[index] != '\0' && index < new_length - 1) {
+		newstring[index] = num->string[index];
+		index++;
+	}
+
+	free((char*) num->string);
+	num->string = newstring;
+	num->length = new_length - 1;
+
+	remove_trailing_digits(num);
 }
