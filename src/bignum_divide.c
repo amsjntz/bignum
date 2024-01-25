@@ -78,7 +78,7 @@ bignum_t* create_bignum_by_power(int power) {
 
 bignum_t* unsigned_divide(const bignum_t* a, const bignum_t* b, unsigned int digits) {
 	narrowed_result_t bounds;
-	int upper_power = MAX(2, MAX(get_maximal_power(a) - get_minimal_power(b),
+	int upper_power = MAX(1, MAX(get_maximal_power(a) - get_minimal_power(b),
 			get_maximal_power(b) - get_minimal_power(a)));
 	bounds.upper = create_bignum_by_power(upper_power);
 	bounds.lower = bignum_create_from_string("0");
