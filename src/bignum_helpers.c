@@ -50,6 +50,7 @@ int get_maximal_power(const bignum_t* num) {
 }
 
 bool is_zero(const bignum_t* num) {
-	return get_maximal_power(num) == get_minimal_power(num) &&
+	int maxpow = get_maximal_power(num);
+	return maxpow == 1 && maxpow == get_minimal_power(num) &&
 		num->string[0] == '0';
 }
