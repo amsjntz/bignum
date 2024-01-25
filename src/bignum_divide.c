@@ -30,7 +30,6 @@ void narrow_iterative(narrowed_result_t* bounds, bignum_division_t* division) {
 	bignum_t* half_factor = bignum_create_from_string("0.5");
 
 	while (!precise_enough(bounds, division->max_difference)) {
-		printf("%s %s\n", bounds->lower->string, bounds->upper->string);
 		bignum_t* sum = bignum_add(bounds->lower, bounds->upper);
 		bignum_t* center = bignum_multiply(sum, half_factor);
 		bignum_cleanup(sum);
