@@ -13,6 +13,10 @@ typedef struct {
 	unsigned int whole_digits;
 } bignum_t;
 
+extern const bignum_t* BIGNUM_ZERO;
+extern const bignum_t* BIGNUM_ONE;
+extern const bignum_t* BIGNUM_HALF;
+
 bignum_t* bignum_create_from_string(const char* src);
 bignum_t* bignum_create_from_int(int value);
 bignum_t* bignum_create_from_double(double value);
