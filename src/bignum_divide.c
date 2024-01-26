@@ -8,7 +8,7 @@
 
 // find result by approximation
 bignum_t* unsigned_divide(const bignum_t* a, const bignum_t* b, unsigned int digits) {
-	int upper_power = MAX(1, MAX(get_maximal_power(a) - get_minimal_power(b),
+	int upper_power = MAX(2, MAX(get_maximal_power(a) - get_minimal_power(b), // TODO: fix this mess
 			get_maximal_power(b) - get_minimal_power(a)));
 	bignum_t* upper = bignum_create_by_power(upper_power);
 	bignum_t* lower = bignum_create_from_string("0");

@@ -4,8 +4,8 @@
 #include <stdio.h>
 
 int main() {
-	const bignum_t* a = bignum_create_from_string("1");
-	const bignum_t* b = bignum_create_from_string("4");
+	const bignum_t* a = bignum_create_from_string("50");
+	const bignum_t* b = bignum_create_from_string("3");
 
 	if (a == NULL) {
 		printf("a is not a number\n");
