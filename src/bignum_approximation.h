@@ -16,6 +16,8 @@ typedef struct {
 // After all, the struct is not that large and this function will
 // not be called too often. The performance difference is probably
 // negligable anyways.
+// ALWAYS use fresh bignums as lower/upper, as in freshly created
+// or copied. Otherwise they might get cleaned up unexpectedly!
 bignum_approx_t approx_initialize(bignum_t* lower, bignum_t* upper,
 		unsigned int precision);
 

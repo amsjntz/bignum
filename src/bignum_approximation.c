@@ -4,8 +4,8 @@
 bignum_approx_t approx_initialize(bignum_t* lower, bignum_t* upper,
 		unsigned int precision) {
 	return (bignum_approx_t) {
-		.lower = bignum_copy(lower),
-		.upper = bignum_copy(upper),
+		.lower = lower,
+		.upper = upper,
 		.precision = precision,
 		.max_difference = bignum_create_by_power(-((int) precision))
 	};
