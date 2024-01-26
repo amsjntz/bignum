@@ -4,73 +4,28 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-typedef struct {
-	bignum_t* lower;
-	bignum_t* upper;
-} narrowed_result_t;
+#include "bignum_approximation.h"
 
-typedef struct {
-	const bignum_t* a;
-	const bignum_t* b;
-	const bignum_t* max_difference;
-} bignum_division_t;
-
-bool precise_enough(narrowed_result_t* result, const bignum_t* max_difference) {
-	if (result->lower->whole_digits != result->upper->whole_digits) {
-		return false;
-	}
-
-	bignum_t* difference = bignum_subtract(result->lower, result->upper);
-	bignum_comparison_t cmp = bignum_unsigned_compare(difference, max_difference);
-	bignum_cleanup(difference);
-	return cmp != BIGNUM_GT;
-}
-
-void narrow_iterative(narrowed_result_t* bounds, bignum_division_t* division) {
-	while (!precise_enough(bounds, division->max_difference)) {
-		bignum_t* sum = bignum_add(bounds->lower, bounds->upper);
-		bignum_t* center = bignum_multiply(sum, BIGNUM_HALF);
-		bignum_cleanup(sum);
-
-		bignum_t* check = bignum_multiply(center, division->b);
-		bignum_comparison_t comparison = bignum_unsigned_compare(check, division->a);
-		bignum_cleanup(check);
-
-		if (comparison == BIGNUM_LT) {
-			bignum_cleanup(bounds->lower);
-			bounds->lower = center;
-		} else {
-			bignum_cleanup(bounds->upper);
-			bounds->upper = center;
-			// center contains correct result -> exit loop
-			if (comparison == BIGNUM_EQ) {
-				break;
-			}
-		}
-	}
-}
-
+// find result by approximation
 bignum_t* unsigned_divide(const bignum_t* a, const bignum_t* b, unsigned int digits) {
-	narrowed_result_t bounds;
 	int upper_power = MAX(1, MAX(get_maximal_power(a) - get_minimal_power(b),
 			get_maximal_power(b) - get_minimal_power(a)));
-	bounds.upper = bignum_create_by_power(upper_power);
-	bounds.lower = bignum_create_from_string("0");
+	bignum_t* upper = bignum_create_by_power(upper_power);
+	bignum_t* lower = bignum_create_from_string("0");
+	bignum_approx_t approx = approx_initialize(lower, upper, digits);
 
-	bignum_division_t division;
-	division.a = a;
-	division.b = b;
+	while (!approx_precise_enough(&approx)) {
+		bignum_t* guess = approx_create_next_guess(&approx);
 
-	division.max_difference = bignum_create_by_power(-((int) digits));
+		// check direction from guess to result
+		bignum_t* check = bignum_multiply(guess, b);
+		bignum_comparison_t direction = bignum_unsigned_compare(a, check);
+		bignum_cleanup(check);
 
-	narrow_iterative(&bounds, &division);
+		approx_adjust_bounds(&approx, guess, direction);
+	}
 
-	bignum_cleanup(division.max_difference);
-
-	bignum_cleanup(bounds.lower);
-
-	crop_to_precision(bounds.upper, digits);
-	return bounds.upper;
+	return approx_finalize(&approx);
 }
 
 bignum_t* bignum_divide(const bignum_t* a, const bignum_t* b, unsigned int digits) {
