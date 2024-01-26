@@ -27,11 +27,9 @@ bool precise_enough(narrowed_result_t* result, const bignum_t* max_difference) {
 }
 
 void narrow_iterative(narrowed_result_t* bounds, bignum_division_t* division) {
-	bignum_t* half_factor = bignum_create_from_string("0.5");
-
 	while (!precise_enough(bounds, division->max_difference)) {
 		bignum_t* sum = bignum_add(bounds->lower, bounds->upper);
-		bignum_t* center = bignum_multiply(sum, half_factor);
+		bignum_t* center = bignum_multiply(sum, BIGNUM_HALF);
 		bignum_cleanup(sum);
 
 		bignum_t* check = bignum_multiply(center, division->b);
@@ -50,8 +48,6 @@ void narrow_iterative(narrowed_result_t* bounds, bignum_division_t* division) {
 			}
 		}
 	}
-
-	bignum_cleanup(half_factor);
 }
 
 bignum_t* unsigned_divide(const bignum_t* a, const bignum_t* b, unsigned int digits) {
