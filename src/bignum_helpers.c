@@ -120,3 +120,25 @@ void crop_to_precision(bignum_t* num, unsigned int precision) {
 
 	remove_trailing_digits(num);
 }
+
+// returns pow(10, power)
+bignum_t* bignum_create_by_power(int power) {
+	if (power >= 0) {
+		char str[power + 2];
+		for (int i = 1; i < power + 1; i++) {
+			str[i] = '0';
+		}
+		str[0] = '1';
+		str[power + 1] = '\0';
+		return bignum_create_from_string(str);
+	} else {
+		char str[-power + 3];
+		for (int i = 0; i < -power + 1; i++) {
+			str[i] = '0';
+		}
+		str[1] = '.';
+		str[-power + 1] = '1';
+		str[-power + 2] = '\0';
+		return bignum_create_from_string(str);
+	}
+}

@@ -23,3 +23,5 @@ bool is_zero(const bignum_t* num);
 void remove_trailing_digits(bignum_t* num);
 
 void crop_to_precision(bignum_t* num, unsigned int precision);
+
+bignum_t* bignum_create_by_power(int power);
