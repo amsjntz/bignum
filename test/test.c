@@ -33,7 +33,7 @@ int main() {
 	bignum_t* sum = bignum_add(a, b);
 	bignum_t* dif = bignum_subtract(a, b);
 	bignum_t* prd = bignum_multiply(a, b);
-	bignum_t* div = bignum_divide(a, b, 11);
+	bignum_t* div = bignum_divide(a, b, 100);
 
 	char* sumstr = bignum_to_string(sum);
 	char* difstr = bignum_to_string(dif);

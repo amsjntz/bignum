@@ -1,5 +1,4 @@
 #include "bignum_approximation.h"
-#include "bignum_helpers.h"
 
 bignum_approx_t approx_initialize(bignum_t* lower, bignum_t* upper,
 		unsigned int precision) {
@@ -7,7 +6,7 @@ bignum_approx_t approx_initialize(bignum_t* lower, bignum_t* upper,
 		.lower = lower,
 		.upper = upper,
 		.precision = precision,
-		.max_difference = bignum_create_by_power(-((int) precision))
+		.max_difference = bignum_create_by_power(-((int) precision + 1))
 	};
 }
 
@@ -26,6 +25,7 @@ bool approx_precise_enough(bignum_approx_t* approx) {
 bignum_t* approx_create_next_guess(bignum_approx_t* approx) {
 	bignum_t* sum = bignum_add(approx->lower, approx->upper);
 	bignum_t* center = bignum_multiply(sum, BIGNUM_HALF);
+	bignum_limit_precision(center, approx->precision + 1);
 	bignum_cleanup(sum);
 	return center;
 }
@@ -45,6 +45,6 @@ bignum_t* approx_finalize(bignum_approx_t* approx) {
 	bignum_cleanup(approx->max_difference);
 	bignum_cleanup(approx->lower);
 
-	crop_to_precision(approx->upper, approx->precision);
+	bignum_limit_precision(approx->upper, approx->precision);
 	return approx->upper;
 }

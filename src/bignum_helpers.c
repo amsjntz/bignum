@@ -100,8 +100,8 @@ void remove_trailing_digits(bignum_t* num) {
 	num->whole_digits -= left;
 }
 
-void crop_to_precision(bignum_t* num, unsigned int precision) {
-	if (!has_floating_point(num)) {
+void bignum_limit_precision(bignum_t* num, unsigned int precision) {
+	if (!has_floating_point(num) || get_minimal_power(num) > -((int) precision)) {
 		return;
 	}
 
