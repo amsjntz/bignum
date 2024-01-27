@@ -4,8 +4,8 @@
 #include <stdio.h>
 
 int main() {
-	const bignum_t* a = bignum_create_from_string("50");
-	const bignum_t* b = bignum_create_from_string("3");
+	const bignum_t* a = bignum_create_from_string("0.9");
+	const bignum_t* b = bignum_create_from_string("1");
 
 	if (a == NULL) {
 		printf("a is not a number\n");
@@ -33,7 +33,7 @@ int main() {
 	bignum_t* sum = bignum_add(a, b);
 	bignum_t* dif = bignum_subtract(a, b);
 	bignum_t* prd = bignum_multiply(a, b);
-	bignum_t* div = bignum_divide(a, b, 100);
+	bignum_t* div = bignum_divide(a, b, 10);
 
 	char* sumstr = bignum_to_string(sum);
 	char* difstr = bignum_to_string(dif);
